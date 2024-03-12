@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { db, storage, auth, firebaseApp } from '../firebase'; 
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage"
-import { collection, addDoc, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc, deleteDoc, setDoc } from 'firebase/firestore';
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -23,14 +23,15 @@ export function useAuth(): any {
 export function addUserToFirestore(user: any) {
   return new Promise(async (resolve, reject) => {
     try {
-      const usersCollection = collection(db, 'admin');
-      const docRef = await addDoc(usersCollection, user);
-      resolve(docRef.id);
+      const usersCollection = collection(db, 'users')
+      const userDoc = doc(usersCollection, user.uid);
+      await setDoc(userDoc, user);
+      resolve(user.uid)
     } catch (error) {
-      console.error('Error adding user to Firestore: ', error);
-      reject(error);
+      console.log('Error adding user to Firestore: ', error)
+      reject(error)
     }
-  });
+  })
 }
 
 export function getUserData(uid: any) {
@@ -200,6 +201,41 @@ export const getAllBookings = () => {
     try {
       const bookingsCollection = db.collection('bookings');
       const query = bookingsCollection.where('userId', '!=', '');
+
+      const userBookings = [];
+      const querySnapshot = await query.get();
+
+      for (const doc of querySnapshot.docs) {
+        const bookingData = doc.data();
+        const poojaId = bookingData.poojaId;
+        const poojaRef = db.collection('poojas').doc(poojaId);
+        const poojaDoc = await poojaRef.get();
+
+        if (poojaDoc.exists) {
+          const poojaDetails = poojaDoc.data();
+          userBookings.push({
+            id: doc.id,
+            bookingData,
+            poojaDetails,
+          });
+        } else {
+          console.log(`Pooja with ID ${poojaId} does not exist.`);
+        }
+      }
+
+      resolve(userBookings);
+    } catch (error) {
+      console.error('Error fetching bookings for user:', error);
+      reject(error);
+    }
+  });
+};
+
+export const getAllBookingsForPandit = (panditID: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const bookingsCollection = db.collection('bookings');
+      const query = bookingsCollection.where('panditId', '==', panditID);
 
       const userBookings = [];
       const querySnapshot = await query.get();

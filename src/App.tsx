@@ -14,6 +14,9 @@ import Create from './pages/poojas/Create'
 import List from './pages/poojas/List'
 import Edit from './pages/poojas/Edit'
 import Home from './pages/Home'
+import Signup from './pages/Signup'
+import Booking from './pages/Booking'
+import { Notifications } from './pages/Notifications'
 
 function App() {
   const providers = [ToastProvider, AuthProvider, ApiProvider]
@@ -22,16 +25,15 @@ function App() {
       <AppContextProviders components={providers}>
         <Routes>
           <Route element={<PrivateRoutes />}>
-            {/* create pooja */}
             <Route element={<Create />} path='/add-poojas' />
-            {/* list poojas */}
             <Route element={<List />} path="list-poojas" />
-            {/* messages */}
-            {/* calender */}
             <Route element={<Edit />} path='/edit-poojas/:id' />
             <Route element={<Home />} path="/" />
+            <Route element={<Booking />} path='/view-bookings' />
+            <Route element={<Notifications />} path='/notifications' />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path='/success' element={<Success />}/>
           <Route path="/messages" element={<ComingSoon />} />

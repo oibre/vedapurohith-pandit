@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useAuth, getAllBookings } from "../contexts/FirebaseContext"
+import { useAuth, getAllBookings, getAllBookingsForPandit } from "../contexts/FirebaseContext"
 import LoadingCards from "../components/loadingCards"
 import Toolbar from "../components/nav/toolbar"
 import BookingCard from "../components/bookingCard"
@@ -25,7 +25,7 @@ const Booking = () => {
   });
 
   useEffect(() => {
-    getAllBookings().then((resp: any) => {
+    getAllBookingsForPandit(currentUser.uid).then((resp: any) => {
       setTimeout(() => {
         setPageLoading(false)
       }, 1500);
@@ -42,8 +42,8 @@ const Booking = () => {
 
   return (
     <div className="container mx-auto mt-10 p-5">
-      <Toolbar showbookBtn={false} headerOverride={false} headerName={'Bookings'} showSearch={true} loading={loading} searchValue={searchValue} onSearch={handleSearch} />
-      {pageLoading && <LoadingCards />}
+      {/* <Toolbar showbookBtn={false} headerOverride={false} headerName={'Bookings'} showSearch={true} loading={loading} searchValue={searchValue} onSearch={handleSearch} /> */}
+      {pageLoading && <LoadingCards noPadding={false} />}
       {!pageLoading && filteredBooking.length === 0 && <p>No bookings found.</p>}
       {!pageLoading && filteredBooking.length > 0 && (
         <div className="mt-[30px]">

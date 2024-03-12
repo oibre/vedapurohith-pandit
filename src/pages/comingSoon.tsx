@@ -3,7 +3,7 @@ import styles from '../global/styles'
 
 const ComingSoon = () => {
   return (
-    <div className="w-[100vw] flex flex-col items-center justify-center h-[100vh]">
+    <div className="w-full flex flex-col items-center justify-center h-full">
       <div className="bg-content shadow-lg flex flex-col items-center justify-center gap-[50px] rounded-lg w-auto h-auto px-[50px] min-h-[50vh] py-[80px]">
         <p className="text-4xl font-bold font-playfair">
           Coming Soon !!

@@ -1,6 +1,6 @@
-const LoadingCards = () => {
+const LoadingCards = ({noPadding = true}) => {
   return (
-    <div className='container mx-auto mt-16 p-5'>
+    <div className={`container mx-auto mt-16 ${noPadding ? "p-5" : "p-0"}`}>
       <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
         <div className="border bg-white shadow rounded-md p-4">
           <div className="animate-pulse flex space-x-4">

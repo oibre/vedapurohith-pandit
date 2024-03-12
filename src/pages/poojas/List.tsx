@@ -49,7 +49,9 @@ const List = () => {
 
   return (
     <div className="container mx-auto p-5 mt-8">
-      <h1 className="text-xl font-semibold mb-6 font-playfair">Your Created Poojas</h1>
+      {
+        userPoojas.length !== 0 && <h1 className="text-xl font-semibold mb-6 font-playfair">Your Poojas</h1>
+      }
 
       {loading && <LoadingCards />}
 
@@ -64,9 +66,18 @@ const List = () => {
             <button onClick={() => {
               navigate('/edit-poojas/' + pooja.id)
             }} className={styles.primaryBtn + ' mt-[30px]'}>Edit Pooja</button>
-            {/* Additional details based on your data structure */}
           </div>
         ))}
+        {
+          userPoojas.length === 0 && (
+            <div className='flex flex-col items-center justify-center w-full'>
+              <p className='text-center mt-[240px] max-w-[85%]'>You have not created any poojas yet. Please click the button below to create a pooja</p>
+              <button onClick={() => {navigate('/add-poojas')}} className={styles.primaryBtn + " mt-[50px]"}>
+                Create Pooja
+              </button>
+            </div>
+          )
+        }
       </div>}
     </div>
   );
